@@ -7,6 +7,8 @@
   <title>Cantinho do Café: O Refúgio da Criatividade</title>
 
   <style>
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -111,6 +113,10 @@ article::after {
   content: "";
   display: table;
   clear: both;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
   </style>
@@ -229,6 +235,9 @@ article::after {
     <br/>
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
+    <br/>
+    <label for="msg">Deixe sua mensagem:</label><br/>
+    <textarea id="msg" name="msg" rows="4" required></textarea>
     <br/>
     <button type="submit">Registre-se</button>
   </form>
