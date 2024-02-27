@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+  <title>Modulo 2 - JS - Projeto Individual</title>
+</head>
+
+<body>
+  <div class="container">
+    <form id="emailForm" onsubmit="formSubmit(event)">
+      <div>
+        <p>Você aceita receber comunicações de marketing da CarStore?</p>
+        <input required type="radio" id="marketing_yes" name="marketing" value="yes">
+        <label for="marketing_yes">Sim</label><br>
+        <input required type="radio" id="marketing_no" name="marketing" value="no">
+        <label for="marketing_no">Não</label><br>
+      </div>
+      <div>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail..." required>
+        <input type="submit" value="Enviar">
+      </div>
+      <div id="successMessage">Respostas enviadas com sucesso!</div>
+    </form>
+  </div>
+
+  <script src="scripts.js"></script>
+
+</body>
+
+</html>
