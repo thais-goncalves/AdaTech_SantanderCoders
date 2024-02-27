@@ -1,4 +1,7 @@
-// Verificar o dia da semana
+// Array para guardar os e-mails dos clientes
+let emails = [];
+
+// Verificar o dia da semana atual
 function getWeekday() {
   let weekdays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
   let today = new Date();
@@ -6,6 +9,7 @@ function getWeekday() {
   return weekDay;
 }
 
+// Criar o corpo do e-mail
 const buildEmailBody = () => {
   const emailBody = `
     Olá,
@@ -26,63 +30,47 @@ const buildEmailBody = () => {
   return emailBody;
 };
 
-function showSuccessMessage() {
-  const successMessage = document.getElementById('successMessage');
-  successMessage.style.display = 'block';
-
-  setTimeout(function () {
-    successMessage.style.display = 'none';
-  }, 10000);
-}
-
-function formSubmit(event) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  const email = document.getElementById('email').value;
-  const marketing = document.querySelector('input[name="marketing"]:checked').value;
-
-  if (email === '' || marketing === '') {
-    alert('Por favor, preencha todos os campos.');
-    console.log('O envio falhou: preencha todos os campos.')
-    return false;
-  } else {
-    showSuccessMessage();
-    console.log('Formulário enviado!')
+// Enviar e-mails
+function sendEmails() {
+  if (getWeekday() === 'Segunda-feira') {
+    emails.forEach((email) => {
+      if (email.marketing === 'yes') {
+        const emailBody = buildEmailBody();
+        const result = sendEmail(email.email, 'Marketing', emailBody);
+        if (result.status === 'Error') {
+          console.log(result.message);
+        }
+      }
+    });
   }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const emailForm = document.getElementById('emailForm');
-  emailForm.addEventListener('submit', formSubmit);
-});
-
-const enviarEmail = (address, subject, body) => {
-  if (!address) {
+const sendEmail = (addressee, subject, body) => {
+  if (!addressee) {
     return {
       status: "Error",
-      message: "Insira o destinatário",
+      message: "Insira um destinatário",
     };
   }
 
   if (!subject) {
     return {
       status: "Error",
-      message: "Insira um assunto.",
+      message: "Insira um assunto",
     };
   }
 
   if (!body) {
     return {
       status: "Error",
-      message: "Insira a mensagem no corpo do email",
+      message: "Insira uma mensagem no corpo do e-mail",
     };
   }
 
   console.log(
     `
-        De: news@carstore.com
-        Para: ${address}
+        De: newsletter@carstore.com
+        Para: ${addressee}
         Assunto: ${subject}
         
         ${body}
@@ -94,18 +82,35 @@ const enviarEmail = (address, subject, body) => {
   return { status: "Success", message: "E-mail enviado com sucesso!" };
 };
 
-let emails = [];
+// Função para lidar com o envio do formulário
+function formSubmit(event) {
+  event.preventDefault();
 
-function sendEmails() {
-  if (getWeekday() === 'Segunda-feira') {
-    emails.forEach((email) => {
-      if (email.marketing === 'yes') {
-        const emailBody = buildEmailBody();
-        const result = enviarEmail(email.email, 'Marketing', emailBody);
-        if (result.status === 'Error') {
-          console.log(result.message);
-        }
-      }
-    });
+  const email = document.getElementById('email').value;
+  const marketing = document.querySelector('input[name="marketing"]:checked').value;
+
+  if (email === '' || marketing === '') {
+    alert('Por favor, preencha todos os campos.');
+    console.log('O envio falhou: preencha todos os campos.')
+    return;
   }
+
+  // Adiciona os dados do formulário ao array de e-mails
+  emails.push({ email: email, marketing: marketing });
+
+  // Exibe a mensagem de sucesso
+  const successMessage = document.getElementById('successMessage');
+  successMessage.style.display = 'block';
+
+  // Limpa os campos do formulário
+  document.getElementById('email').value = '';
+  document.querySelector('input[name="marketing"]:checked').checked = false;
+
+  console.log('Formulário enviado!');
 }
+
+// Submit do formulário
+document.addEventListener('DOMContentLoaded', function () {
+  const emailForm = document.getElementById('emailForm');
+  emailForm.addEventListener('submit', formSubmit);
+});
